@@ -1,0 +1,105 @@
+@use "sass:math";
+
+// --- VARIABLES ---
+$doc-font-size: 16; // In pixels without unit
+$doc-line-height: 24; // In pixels without unit
+$doc-heading-scale: 7; // Scaling factor
+
+// --- FUNCTIONS ---
+// Returns a line-height "unit". I hope rhl units will be supported everywhere soon.
+// Use this for paddings, margins and sizes if you can.
+@function line-height-unit($unit) {
+    @return math.div(($doc-line-height * $unit), $doc-font-size) + 0rem;
+}
+
+// --- MIXINS ---
+// Sets font-size and line-height in relation to each other
+@mixin font-size-and-line-height($size) {
+    // Set font size in rems
+    font-size: math.div($size, $doc-font-size) + 0rem;
+
+    // Get line-height multiple rounded up to nearest integer
+    $multiple: math.ceil(math.div($size, $doc-line-height));
+    line-height: line-height-unit($multiple);
+}
+// Draws a baseline grid. Only really works when set on the body, with no margin or padding
+// Primarily for debugging purposes
+@mixin baseline-background($alpha) {
+    background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0px,
+        rgba(255, 255, 255, 0) calc(line-height-unit(1) - 1px),
+        rgba(255, 255, 255, $alpha) calc(line-height-unit(1) - 1px),
+        rgba(255, 255, 255, $alpha) line-height-unit(1)
+    );
+}
+
+// --- BASELINE ---
+// Remove standard sizings from all elements
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: inherit;
+    line-height: inherit;
+}
+// Setting the baseline
+html {
+    font-size: $doc-font-size + 0px;
+    line-height: line-height-unit(1);
+}
+
+// --- HEADINGS ---
+// Set heading sizes, line-heights and relative position
+// Relative position is set here, because headings need to be a little closer
+// to the elements that come after (gestahlt and all that)
+@for $i from 1 through 6 {
+    h#{$i} {
+        @include font-size-and-line-height($doc-font-size + $doc-heading-scale * (5 - $i));
+        position: relative;
+        top: 0.5rem;
+    }
+}
+
+// --- MARGINS ---
+// Add top margin to elements that come after another
+h1 + *,
+h2 + *,
+h3 + *,
+h4 + *,
+h5 + *,
+h6 + *,
+p + *,
+ol + *,
+ul + *,
+blockquote + *,
+q + *,
+code + *,
+table + * {
+    margin-top: line-height-unit(1);
+}
+
+// --- LISTS ---
+// Add top and left margin to lists
+ol,
+ul {
+    margin-top: line-height-unit(1);
+    margin-left: line-height-unit(1);
+}
+// Remove top margin and add left margin to nested lists
+li > ol,
+li > ul {
+    margin-top: 0;
+    margin-left: line-height-unit(1);
+}
+// Fix list-item markers extending the height of the li element
+li::marker {
+    line-height: 1rem;
+}
+
+// --- TABLES ---
+// Fix tables
+table {
+    border-spacing: 0px;
+    border-collapse: collapse;
+}

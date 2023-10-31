@@ -1,0 +1,91 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5rem;
+}
+
+h1 {
+  font-size: 2.75rem;
+  line-height: 3rem;
+  position: relative;
+  top: 0.5rem;
+}
+
+h2 {
+  font-size: 2.3125rem;
+  line-height: 3rem;
+  position: relative;
+  top: 0.5rem;
+}
+
+h3 {
+  font-size: 1.875rem;
+  line-height: 3rem;
+  position: relative;
+  top: 0.5rem;
+}
+
+h4 {
+  font-size: 1.4375rem;
+  line-height: 1.5rem;
+  position: relative;
+  top: 0.5rem;
+}
+
+h5 {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  position: relative;
+  top: 0.5rem;
+}
+
+h6 {
+  font-size: 0.5625rem;
+  line-height: 1.5rem;
+  position: relative;
+  top: 0.5rem;
+}
+
+h1 + *,
+h2 + *,
+h3 + *,
+h4 + *,
+h5 + *,
+h6 + *,
+p + *,
+ol + *,
+ul + *,
+blockquote + *,
+q + *,
+code + *,
+table + * {
+  margin-top: 1.5rem;
+}
+
+ol,
+ul {
+  margin-top: 1.5rem;
+  margin-left: 1.5rem;
+}
+
+li > ol,
+li > ul {
+  margin-top: 0;
+  margin-left: 1.5rem;
+}
+
+li::marker {
+  line-height: 1rem;
+}
+
+table {
+  border-spacing: 0px;
+  border-collapse: collapse;
+}/*# sourceMappingURL=vertical-rhythm.css.map */
