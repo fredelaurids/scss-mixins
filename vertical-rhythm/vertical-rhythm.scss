@@ -3,35 +3,42 @@
 // --- VARIABLES ---
 $doc-font-size: 16; // In pixels without unit
 $doc-line-height: 24; // In pixels without unit
-$doc-heading-scale: 7; // Scaling factor
+$doc-scale-ratio: 1.618; // Scaling factor (golden ratio 1.618, perfect fourth 1.333)
 
 // --- FUNCTIONS ---
 // Returns a line-height "unit". I hope rhl units will be supported everywhere soon.
 // Use this for paddings, margins and sizes if you can.
-@function line-height-unit($unit) {
+@function rhythm-unit($unit) {
     @return math.div(($doc-line-height * $unit), $doc-font-size) + 0rem;
 }
 
 // --- MIXINS ---
-// Sets font-size and line-height in relation to each other
-@mixin font-size-and-line-height($size) {
+// Sets font-size and line-height in relation to each other.
+// It's in multiples, so 0 would be the root size, and 1 would be
+// the root size multiplied by the ratio.
+@mixin set-size($multiple) {
+    // Calculate size
+    $size: $doc-font-size * math.pow($doc-scale-ratio, $multiple);
+
     // Set font size in rems
     font-size: math.div($size, $doc-font-size) + 0rem;
 
     // Get line-height multiple rounded up to nearest integer
-    $multiple: math.ceil(math.div($size, $doc-line-height));
-    line-height: line-height-unit($multiple);
+    $multiple: math.round(math.div($size, $doc-line-height));
+    line-height: rhythm-unit(math.clamp(1, $multiple, math.$max-safe-integer));
 }
-// Draws a baseline grid. Only really works when set on the body, with no margin or padding
-// Primarily for debugging purposes
-@mixin baseline-background($alpha) {
+// Draws a baseline grid.
+// Only really works when set same place as body-copy, with no margin or padding.
+// Primarily for debugging purposes.
+@mixin baseline-background($alpha, $offset: 0) {
     background-image: repeating-linear-gradient(
         to bottom,
-        rgba(255, 255, 255, 0) 0px,
-        rgba(255, 255, 255, 0) calc(line-height-unit(1) - 1px),
-        rgba(255, 255, 255, $alpha) calc(line-height-unit(1) - 1px),
-        rgba(255, 255, 255, $alpha) line-height-unit(1)
+        transparent 0px,
+        transparent calc(rhythm-unit(1) - 1px),
+        rgba(128, 128, 128, $alpha) calc(rhythm-unit(1) - 1px),
+        rgba(128, 128, 128, $alpha) rhythm-unit(1)
     );
+    background-position-y: rhythm-unit($offset) + 0rem;
 }
 
 // --- BASELINE ---
@@ -45,56 +52,85 @@ $doc-heading-scale: 7; // Scaling factor
 }
 // Setting the baseline
 html {
-    font-size: $doc-font-size + 0px;
-    line-height: line-height-unit(1);
+    @include set-size(0);
 }
 
 // --- HEADINGS ---
-// Set heading sizes, line-heights and relative position
-// Relative position is set here, because headings need to be a little closer
-// to the elements that come after (gestahlt and all that)
+// Set heading sizes and line heights
+// This sets h5 to same size as paragraphs.
 @for $i from 1 through 6 {
     h#{$i} {
-        @include font-size-and-line-height($doc-font-size + $doc-heading-scale * (5 - $i));
-        position: relative;
-        top: 0.5rem;
+        @include set-size((5 - $i));
     }
 }
 
-// --- MARGINS ---
-// Add top margin to elements that come after another
-h1 + *,
-h2 + *,
-h3 + *,
-h4 + *,
-h5 + *,
-h6 + *,
-p + *,
-ol + *,
-ul + *,
-blockquote + *,
-q + *,
-code + *,
-table + * {
-    margin-top: line-height-unit(1);
+// --- BODY COPY ---
+// Use this anywhere you want the body copy.
+// Such as inside an <article> or similar.
+// Anywhere where you need the paragraphs to be spaced from the headings.
+// This also assumes that none of the headings are nested inside
+// a <header> tag, but sits freely next to the other elements.
+@mixin body-copy {
+    // --- HEADINGS ---
+    // Relative position is set here, because headings need to be a little closer
+    // to the elements they relate to (gestahlt and all that).
+    @for $i from 1 through 6 {
+        h#{$i} {
+            position: relative;
+            top: rhythm-unit(0.25);
+        }
+    }
+    // --- MARGINS ---
+    // Add top margin to elements that come after another
+    h1 + *,
+    h2 + *,
+    h3 + *,
+    h4 + *,
+    h5 + *,
+    h6 + *,
+    p + *,
+    ol + *,
+    ul + *,
+    blockquote + *,
+    form + *,
+    fieldset + *,
+    q + *,
+    code + *,
+    table + * {
+        margin-top: rhythm-unit(1);
+    }
+    // --- LISTS ---
+    // Add top and left margin to lists
+    ol,
+    ul {
+        margin-top: rhythm-unit(1);
+        margin-left: rhythm-unit(1);
+    }
+    // Remove top margin and add left margin to nested lists
+    li > ol,
+    li > ul {
+        margin-top: 0;
+        margin-left: rhythm-unit(1);
+    }
 }
 
-// --- LISTS ---
-// Add top and left margin to lists
-ol,
-ul {
-    margin-top: line-height-unit(1);
-    margin-left: line-height-unit(1);
+// --- FORM AND INPUT FIXES ---
+input:not([type="checkbox"], [type="radio"]),
+select:not([multiple]),
+button {
+    line-height: rhythm-unit(1);
+    height: rhythm-unit(1.2);
+    margin-top: rhythm-unit(0.4);
+    margin-bottom: rhythm-unit(0.4);
 }
-// Remove top margin and add left margin to nested lists
-li > ol,
-li > ul {
-    margin-top: 0;
-    margin-left: line-height-unit(1);
-}
-// Fix list-item markers extending the height of the li element
+
+// --- TYPOGRAPHY FIXES ---
+// Prevent <sub>, <sup>, <li>::markers
+// from expanding the size of their parent
+sub,
+sup,
 li::marker {
-    line-height: 1rem;
+    line-height: 0rem;
 }
 
 // --- TABLES ---
@@ -103,3 +139,9 @@ table {
     border-spacing: 0px;
     border-collapse: collapse;
 }
+
+// // TESTING PURPOSES BELOW
+// article {
+//     @include baseline-background(0.25, -0.25);
+//     @include body-copy();
+// }

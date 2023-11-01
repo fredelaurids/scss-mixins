@@ -7,82 +7,53 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.5rem;
 }
 
 h1 {
-  font-size: 2.75rem;
-  line-height: 3rem;
-  position: relative;
-  top: 0.5rem;
+  font-size: 6.8535260698rem;
+  line-height: 7.5rem;
 }
 
 h2 {
-  font-size: 2.3125rem;
-  line-height: 3rem;
-  position: relative;
-  top: 0.5rem;
+  font-size: 4.235801032rem;
+  line-height: 4.5rem;
 }
 
 h3 {
-  font-size: 1.875rem;
+  font-size: 2.617924rem;
   line-height: 3rem;
-  position: relative;
-  top: 0.5rem;
 }
 
 h4 {
-  font-size: 1.4375rem;
+  font-size: 1.618rem;
   line-height: 1.5rem;
-  position: relative;
-  top: 0.5rem;
 }
 
 h5 {
   font-size: 1rem;
   line-height: 1.5rem;
-  position: relative;
-  top: 0.5rem;
 }
 
 h6 {
-  font-size: 0.5625rem;
+  font-size: 0.6180469716rem;
   line-height: 1.5rem;
-  position: relative;
-  top: 0.5rem;
 }
 
-h1 + *,
-h2 + *,
-h3 + *,
-h4 + *,
-h5 + *,
-h6 + *,
-p + *,
-ol + *,
-ul + *,
-blockquote + *,
-q + *,
-code + *,
-table + * {
-  margin-top: 1.5rem;
+input:not([type=checkbox], [type=radio]),
+select:not([multiple]),
+button {
+  line-height: 1.5rem;
+  height: 1.8rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
 }
 
-ol,
-ul {
-  margin-top: 1.5rem;
-  margin-left: 1.5rem;
-}
-
-li > ol,
-li > ul {
-  margin-top: 0;
-  margin-left: 1.5rem;
-}
-
+sub,
+sup,
 li::marker {
-  line-height: 1rem;
+  line-height: 0rem;
 }
 
 table {
