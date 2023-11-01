@@ -154,12 +154,3 @@ table {
     border-spacing: 0px;
     border-collapse: collapse;
 }
-
-// // TESTING PURPOSES BELOW
-body {
-    font-family: sans-serif;
-}
-article {
-    @include baseline-background(0.25, -0.25);
-    @include body-copy();
-}
