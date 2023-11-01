@@ -40,31 +40,7 @@ $doc-scale-ratio: 1.618; // Scaling factor (golden ratio 1.618, perfect fourth 1
     );
     background-position-y: rhythm-unit($offset) + 0rem;
 }
-
-// --- BASELINE ---
-// Remove standard sizings from all elements
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-size: inherit;
-    line-height: inherit;
-}
-// Setting the baseline
-html {
-    @include set-size(0);
-}
-
-// --- HEADINGS ---
-// Set heading sizes and line heights
-// This sets h5 to same size as paragraphs.
-@for $i from 1 through 6 {
-    h#{$i} {
-        @include set-size((5 - $i));
-    }
-}
-
-// --- BODY COPY ---
+// --- BODY-COPY MIXIN ---
 // Use this anywhere you want the body copy.
 // Such as inside an <article> or similar.
 // Anywhere where you need the paragraphs to be spaced from the headings.
@@ -111,6 +87,29 @@ html {
     li > ul {
         margin-top: 0;
         margin-left: rhythm-unit(1);
+    }
+}
+
+// --- BASELINE ---
+// Remove standard sizings from all elements
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: inherit;
+    line-height: inherit;
+}
+// Setting the baseline
+html {
+    @include set-size(0);
+}
+
+// --- HEADINGS ---
+// Set heading sizes and line heights
+// This sets h5 to same size as paragraphs.
+@for $i from 1 through 6 {
+    h#{$i} {
+        @include set-size((5 - $i));
     }
 }
 
