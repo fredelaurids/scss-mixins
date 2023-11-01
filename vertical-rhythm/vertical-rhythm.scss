@@ -72,7 +72,8 @@ $doc-scale-ratio: 1.618; // Scaling factor (golden ratio 1.618, perfect fourth 1
     fieldset + *,
     q + *,
     code + *,
-    table + * {
+    table + *,
+    hr + * {
         margin-top: rhythm-unit(1);
     }
     // --- LISTS ---
@@ -100,7 +101,8 @@ $doc-scale-ratio: 1.618; // Scaling factor (golden ratio 1.618, perfect fourth 1
     line-height: inherit;
 }
 // Setting the baseline
-html {
+html,
+body {
     @include set-size(0);
 }
 
@@ -128,8 +130,22 @@ button {
 // from expanding the size of their parent
 sub,
 sup,
-li::marker {
+li::marker,
+a,
+b,
+i,
+strong,
+em,
+small,
+code,
+samp {
     line-height: 0rem;
+}
+// Fix horizontal ruler pushing everything around
+// by setting negative margins so it has "no size"
+hr {
+    border-width: 1px 0 0 0;
+    margin: -1px 0;
 }
 
 // --- TABLES ---
@@ -140,7 +156,10 @@ table {
 }
 
 // // TESTING PURPOSES BELOW
-// article {
-//     @include baseline-background(0.25, -0.25);
-//     @include body-copy();
-// }
+body {
+    font-family: sans-serif;
+}
+article {
+    @include baseline-background(0.25, -0.25);
+    @include body-copy();
+}
