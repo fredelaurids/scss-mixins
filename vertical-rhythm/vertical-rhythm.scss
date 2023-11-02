@@ -1,8 +1,8 @@
 @use "sass:math";
 
 // --- VARIABLES ---
-$doc-font-size: 16; // In pixels without unit
-$doc-line-height: 24; // In pixels without unit
+$doc-font-size: 12; // In pixels without unit
+$doc-line-height: 20; // In pixels without unit
 $doc-scale-ratio: 1.618; // Scaling factor (golden ratio 1.618, perfect fourth 1.333)
 
 // --- FUNCTIONS ---
@@ -103,7 +103,8 @@ $doc-scale-ratio: 1.618; // Scaling factor (golden ratio 1.618, perfect fourth 1
 // Setting the baseline
 html,
 body {
-    @include set-size(0);
+    font-size: $doc-font-size + 0px;
+    line-height: rhythm-unit(1);
 }
 
 // --- HEADINGS ---
@@ -113,6 +114,10 @@ body {
     h#{$i} {
         @include set-size((5 - $i));
     }
+}
+
+p {
+    @include set-size(0);
 }
 
 // --- FORM AND INPUT FIXES ---
@@ -131,14 +136,14 @@ button {
 sub,
 sup,
 li::marker,
-a,
 b,
 i,
 strong,
 em,
 small,
 code,
-samp {
+samp,
+figure {
     line-height: 0rem;
 }
 // Fix horizontal ruler pushing everything around
